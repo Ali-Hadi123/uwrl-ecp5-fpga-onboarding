@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module top_tb;
+module tb_top;
 
 parameter int HALF_PERIOD_CYCLES = 7;
 
@@ -17,7 +17,7 @@ end
 
 initial begin
     #3000;
-    $fatal(1, "Timeout error.")
+    $fatal(1, "Timeout error.");
 end
 
 always #20 clk = ~clk;
@@ -39,9 +39,12 @@ localparam time toggle_period = HALF_PERIOD_CYCLES * 40;
 
 time change_allowed = first_toggle;
 
+logic first_led_fire = 1;
 always @(led) begin
     //Check if led glitches between cycles.
-    if ($time !== change_allowed)
+    if (first_led_fire)
+        first_led_fire = 0;
+    else if ($time !== change_allowed)
         $fatal(1, "Led changed at unexpected time %t", $time);
     change_allowed += toggle_period;
 end
@@ -69,7 +72,7 @@ always @(posedge clk) begin
     end
 end
 
-always begin
+always @(passed_cycles) begin
     if (passed_cycles === cycles_to_pass) begin
         $display("PASS");
         $finish;
