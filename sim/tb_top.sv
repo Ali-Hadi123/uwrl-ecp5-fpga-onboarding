@@ -12,7 +12,7 @@ logic led;
 
 initial begin
     $dumpfile("blink.vcd");
-    $dumpvars(0, top_tb);
+    $dumpvars(0, tb_top);
 end
 
 initial begin
