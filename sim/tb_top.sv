@@ -5,7 +5,7 @@ module tb_top;
 parameter int HALF_PERIOD_CYCLES = 7;
 
 int passed_cycles = 0;
-localparam cycles_to_pass = 10;
+localparam cycles_to_pass = 30;
 
 logic clk = 0;
 logic led;
@@ -39,37 +39,29 @@ localparam time toggle_period = HALF_PERIOD_CYCLES * 40;
 
 time change_allowed = first_toggle;
 
-logic first_led_fire = 1;
 always @(led) begin
-    //Check if led glitches between cycles.
-    if (first_led_fire)
-        first_led_fire = 0;
-    else if ($time !== change_allowed)
-        $fatal(1, "Led changed at unexpected time %t", $time);
-    change_allowed += toggle_period;
+    if ($time != 0) begin
+        if ($time !== change_allowed)
+            $fatal(1, "Led changed at unexpected time %t", $time);
+        change_allowed += toggle_period;
+    end
 end
 
-int clk_cycles = 0;
+int edge_count = 0;
+logic expected_led;
 
 always @(posedge clk) begin
-    //Ensure that led is never X/Z
     #1ps;
+    edge_count++;
+
     if (led === 1'bx || led === 1'bz)
         $fatal(1, "Led is X/Z."); 
 
-    //Check that led follows cycles properly.
-    if (clk_cycles < HALF_PERIOD_CYCLES - 1) begin
-        if (led !== 1'b0) 
-            $fatal(1, "Led is not low when expected");
-        clk_cycles <= clk_cycles + 1;
-        passed_cycles <= passed_cycles + 1;
-    end
-    else begin
-        if (led !== 1'b1) 
-            $fatal(1, "Led is not high when expected");
-        clk_cycles <= 0;
-        passed_cycles <= passed_cycles + 1;
-    end
+    expected_led = (((edge_count / HALF_PERIOD_CYCLES) % 2) == 1);
+    if (led !== expected_led)
+        $fatal(1, "Led is %b at edge %0d, expected %b", led, edge_count, expected_led);
+
+    passed_cycles <= passed_cycles + 1;
 end
 
 always @(passed_cycles) begin
