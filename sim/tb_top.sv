@@ -11,7 +11,7 @@ logic clk = 0;
 logic led;
 
 initial begin
-    $dumpfile("blink.vcd");
+    $dumpfile("build/blink.vcd");
     $dumpvars(0, tb_top);
 end
 

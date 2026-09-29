@@ -1,0 +1,90 @@
+$date
+	Mon Sep 28 23:53:40 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_top $end
+$var wire 1 ! led $end
+$var parameter 32 " HALF_PERIOD_CYCLES $end
+$var parameter 32 # cycles_to_pass $end
+$var parameter 64 $ first_toggle $end
+$var parameter 64 % toggle_period $end
+$var reg 64 & change_allowed [63:0] $end
+$var reg 1 ' clk $end
+$var reg 1 ( first_led_fire $end
+$var integer 32 ) clk_cycles [31:0] $end
+$var integer 32 * passed_cycles [31:0] $end
+$scope module dut $end
+$var wire 1 ' clk_25mhz $end
+$var parameter 32 + HALF_PERIOD_CYCLES $end
+$var reg 1 ! led $end
+$var integer 32 , clk_count [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b110 +
+b11110000 %
+b11011100 $
+b1010 #
+b110 "
+$end
+#0
+$dumpvars
+b0 ,
+b0 *
+b0 )
+0(
+0'
+b111001100 &
+0!
+$end
+#20000
+b1 ,
+1'
+#20001
+b1 *
+b1 )
+#40000
+0'
+#60000
+b10 ,
+1'
+#60001
+b10 *
+b10 )
+#80000
+0'
+#100000
+b11 ,
+1'
+#100001
+b11 *
+b11 )
+#120000
+0'
+#140000
+b100 ,
+1'
+#140001
+b100 *
+b100 )
+#160000
+0'
+#180000
+b101 ,
+1'
+#180001
+b101 *
+b101 )
+#200000
+0'
+#220000
+1!
+b0 ,
+1'
